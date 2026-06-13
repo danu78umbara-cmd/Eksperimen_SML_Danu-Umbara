@@ -1,0 +1,33 @@
+name: Preprocessing Customer Churn
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  preprocessing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas scikit-learn
+
+      - name: Run preprocessing
+        run: |
+          python preprocessing/automate_Danu_Umbara.py
+
+      - name: Upload preprocessing artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: customer_churn_preprocessing
+          path: preprocessing/customer_churn_preprocessing/churn_preprocessed.csv
